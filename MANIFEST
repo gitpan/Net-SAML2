@@ -1,0 +1,23 @@
+Changes
+inc/Module/Install.pm
+inc/Module/Install/Base.pm
+inc/Module/Install/Can.pm
+inc/Module/Install/Fetch.pm
+inc/Module/Install/Makefile.pm
+inc/Module/Install/Metadata.pm
+inc/Module/Install/Win32.pm
+inc/Module/Install/WriteAll.pm
+lib/Net/SAML2.pm
+lib/Net/SAML2/Binding/Artifact.pm
+lib/Net/SAML2/Binding/POST.pm
+lib/Net/SAML2/Binding/Redirect.pm
+lib/Net/SAML2/IdP.pm
+lib/Net/SAML2/Protocol/Assertion.pm
+lib/Net/SAML2/Protocol/AuthnRequest.pm
+lib/Net/SAML2/Protocol/LogoutRequest.pm
+lib/Net/SAML2/SP.pm
+Makefile.PL
+MANIFEST			This list of files
+META.yml
+README
+t/00-basic.t

@@ -1,0 +1,34 @@
+---
+abstract: 'SAML bindings and protocol implementation'
+author:
+  - 'Chris Andrews <chrisandrews@venda.com>'
+build_requires:
+  ExtUtils::MakeMaker: 6.42
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
+distribution_type: module
+generated_by: 'Module::Install version 0.99'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Net-SAML2
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  Crypt::OpenSSL::RSA: 0
+  Crypt::OpenSSL::X509: 0
+  File::Slurp: 0
+  IO::Compress::RawDeflate: 0
+  IO::Uncompress::RawInflate: 0
+  LWP::UserAgent: 0
+  MIME::Base64: 0
+  URI: 0
+  XML::Sig: 0
+  XML::XPath: 0
+  perl: 5.8.1
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01_01
