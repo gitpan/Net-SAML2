@@ -4,7 +4,7 @@ use warnings;
 
 require 5.008_001;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.10';
 $VERSION = eval $VERSION;
 
 =head1 NAME
@@ -28,7 +28,7 @@ Net::SAML2 - SAML bindings and protocol implementation
                 url => $sso_url,
         );
 
-        my $url = $redirect->sign_request($authnreq);
+        my $url = $redirect->sign($authnreq);
 
   # handle the POST back from the IdP, via the browser:
 
@@ -38,7 +38,7 @@ Net::SAML2 - SAML bindings and protocol implementation
         );
         
         if ($ret) {
-                my $assertion = Net::SAML2::Protocol::Assertion->new(
+                my $assertion = Net::SAML2::Protocol::Assertion->new_from_xml(
                         xml => decode_base64($saml_response)
                 );
 
@@ -58,10 +58,6 @@ SSO process.
 
 =item SP-side protocol only
 
-=item No verification of the signer of received Assertions
-
-=item Limited handling of protocol / network errors
-
 =item Requires XML metadata from the IdP
 
 =back
@@ -74,13 +70,15 @@ use Net::SAML2::SP;
 
 # bindings
 use Net::SAML2::Binding::Redirect;
-use Net::SAML2::Binding::Artifact;
 use Net::SAML2::Binding::POST;
+use Net::SAML2::Binding::SOAP;
 
 # protocol
 use Net::SAML2::Protocol::AuthnRequest;
 use Net::SAML2::Protocol::LogoutRequest;
+use Net::SAML2::Protocol::LogoutResponse;;
 use Net::SAML2::Protocol::Assertion;
+use Net::SAML2::Protocol::ArtifactResolve;
 
 =pod
 

@@ -1,36 +1,103 @@
 package Net::SAML2::Protocol::LogoutRequest;
-use strict;
-use warnings;
+use Moose;
+use MooseX::Types::Common::String qw/ NonEmptySimpleStr /;
+use MooseX::Types::URI qw/ Uri /;
 
-sub new { 
+with 'Net::SAML2::Role::ProtocolMessage';
+
+=head1 NAME
+
+Net::SAML2::Protocol::LogoutRequest - the SAML2 LogoutRequest object
+
+=head1 SYNOPSIS
+
+  my $logout_req = Net::SAML2::Protocol::LogoutRequest->new(
+    issuer      => $issuer,
+    destination => $destination,
+    nameid      => $nameid,
+    session     => $session,
+  );
+
+=head1 METHODS
+
+=head2 new( ... )
+
+Constructor. Returns an instance of the LogoutRequest object.
+
+Arguments:
+
+ * session - the session to log out
+ * nameid - the NameID of the user to log out
+ * issuer - the SP's identity URI
+ * destination -  the IdP's identity URI
+
+=cut
+
+has 'session'     => (isa => NonEmptySimpleStr, is => 'ro', required => 1);
+has 'nameid'      => (isa => NonEmptySimpleStr, is => 'ro', required => 1);
+has 'issuer'      => (isa => Uri, is => 'ro', required => 1, coerce => 1);
+has 'destination' => (isa => Uri, is => 'ro', required => 1, coerce => 1);
+
+=head2 new_from_xml
+
+Create a LogoutRequest object from the given XML.
+
+=cut
+
+sub new_from_xml {
         my ($class, %args) = @_;
-        my $self = bless {}, $class;
 
-        $self->{session}     = $args{session};
-        $self->{nameid}      = $args{nameid};
-        $self->{issuer}      = $args{issuer};
-        $self->{destination} = $args{destination};
+        my $xpath = XML::XPath->new( xml => $args{xml} );
+        $xpath->set_namespace('saml', 'urn:oasis:names:tc:SAML:2.0:assertion');
+        $xpath->set_namespace('samlp', 'urn:oasis:names:tc:SAML:2.0:protocol');
+
+        my $self = $class->new(
+                id          => $xpath->findvalue('/samlp:LogoutRequest/@ID')->value,
+                session     => $xpath->findvalue('/samlp:LogoutRequest/samlp:SessionIndex')->value,
+                issuer      => $xpath->findvalue('/samlp:LogoutRequest/saml:Issuer')->value,
+                nameid      => $xpath->findvalue('/samlp:LogoutRequest/saml:NameID')->value,
+                destination => $xpath->findvalue('/samlp:LogoutRequest/saml:NameID/@NameQualifier')->value,
+        );
 
         return $self;
 }
 
+=head2 as_xml()
+
+Returns the LogoutRequest as XML.
+
+=cut
+
 sub as_xml {
         my ($self) = @_;
 
-        my $xml =<<"EOXML";
-<sp:LogoutRequest xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"
-	ID="21B78E9C6C8ECF16F01E4A0F15AB2D46" IssueInstant="2010-04-28T21:36:11.230Z"
-	Version="2.0">
-	<sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">$self->{issuer}</sa:Issuer>
-	<sa:NameID xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
-		   NameQualifier="$self->{destination}" 
-                   SPNameQualifier="$self->{issuer}">$self->{nameid}</sa:NameID>
-	<sp:SessionIndex>$self->{session}</sp:SessionIndex>
-</sp:LogoutRequest>
-EOXML
+        my $x = XML::Generator->new(':pretty');
+        my $saml  = ['saml' => 'urn:oasis:names:tc:SAML:2.0:assertion'];
+        my $samlp = ['samlp' => 'urn:oasis:names:tc:SAML:2.0:protocol'];
 
-        return $xml;
+        $x->xml(
+                $x->LogoutRequest(
+                        $samlp,
+                        { ID => $self->id,
+                          IssueInstant => $self->issue_instant, 
+                          Version => '2.0' },
+                        $x->Issuer(
+                                $saml,
+                                $self->issuer,
+                        ),
+                        $x->NameID(
+                                $saml,
+                                { Format => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+                                  NameQualifier => $self->destination,
+                                  SPNameQualifier => $self->issuer },
+                                $self->nameid,
+                        ),
+                        $x->SessionIndex(
+                                $samlp,
+                                $self->session,
+                        ),
+                )
+        );
 }
 
-1;
-        
+__PACKAGE__->meta->make_immutable;

@@ -1,17 +1,49 @@
-use inc::Module::Install;
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use inc::Module::Install 0.91;
+use Module::Install::AuthorRequires;
+use Module::Install::AuthorTests;
+use Module::Install::ReadmeFromPod;
 
 name 'Net-SAML2';
 all_from 'lib/Net/SAML2.pm';
 
 requires 'XML::Sig';
+requires 'XML::XPath';
+requires 'XML::Generator';
 requires 'Crypt::OpenSSL::RSA';
 requires 'Crypt::OpenSSL::X509';
+requires 'Crypt::OpenSSL::Random';
+requires 'Crypt::OpenSSL::VerifyX509';
 requires 'IO::Compress::RawDeflate';
 requires 'IO::Uncompress::RawInflate';
 requires 'File::Slurp';
 requires 'URI';
 requires 'MIME::Base64';
 requires 'LWP::UserAgent';
-requires 'XML::XPath';
+requires 'DateTime::Format::XSD';
+requires 'Moose';
+requires 'MooseX::Types';
+requires 'MooseX::Types::URI';
+requires 'MooseX::Types::Common';
+requires 'MooseX::Types::DateTime';
+
+author_requires 'Test::NoTabs';
+author_requires 'Test::Pod' => '1.14';
+author_requires 'Test::Pod::Coverage' => '1.04';
+
+test_requires 'Test::More' => '0.88';
+test_requires 'Dancer' => '1.2000';
+test_requires 'WWW::Mechanize' => '1.66';
+
+resources
+     license     => "http://dev.perl.org/licenses",
+     bugtracker  => "http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-SAML2",
+     repository  => "http://github.com/chrisa/perl-Net-SAML2";
+
+author_tests 't/author';
 
 WriteAll;
