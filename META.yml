@@ -38,11 +38,10 @@ requires:
   MooseX::Types::URI: 0
   URI: 0
   XML::Generator: 0
-  XML::Sig: 0
   XML::XPath: 0
   perl: 5.8.1
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-SAML2
   license: http://dev.perl.org/licenses
   repository: http://github.com/chrisa/perl-Net-SAML2
-version: 0.11
+version: 0.12
