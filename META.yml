@@ -21,11 +21,15 @@ no_index:
     - inc
     - t
 requires:
+  Class::Accessor: 0
+  Crypt::OpenSSL::Bignum: 0
+  Crypt::OpenSSL::DSA: 0
   Crypt::OpenSSL::RSA: 0
   Crypt::OpenSSL::Random: 0
   Crypt::OpenSSL::VerifyX509: 0
   Crypt::OpenSSL::X509: 0
   DateTime::Format::XSD: 0
+  Digest::SHA1: 0
   File::Slurp: 0
   IO::Compress::RawDeflate: 0
   IO::Uncompress::RawInflate: 0
@@ -37,6 +41,7 @@ requires:
   MooseX::Types::DateTime: 0
   MooseX::Types::URI: 0
   URI: 0
+  XML::CanonicalizeXML: 0
   XML::Generator: 0
   XML::XPath: 0
   perl: 5.8.1
@@ -44,4 +49,4 @@ resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-SAML2
   license: http://dev.perl.org/licenses
   repository: http://github.com/chrisa/perl-Net-SAML2
-version: 0.12
+version: 0.13
