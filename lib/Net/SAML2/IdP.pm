@@ -140,9 +140,9 @@ sub BUILD {
         
     for my $use (keys %{ $self->certs }) {
         my $cert = Crypt::OpenSSL::X509->new_from_string($self->certs->{$use});
-        #unless ($ca->verify($cert)) {
-        #    die "can't verify IdP '$use' cert";
-        #}
+        unless ($ca->verify($cert)) {
+            die "can't verify IdP '$use' cert";
+        }
     }       
 }
 

@@ -13,7 +13,7 @@ my $lor = Net::SAML2::Protocol::LogoutRequest->new(
 ok($lor);
 my $xml = $lor->as_xml;
 ok($xml);
-diag($xml);
+#diag($xml);
 
 ok(qr/ID=".+"/, $xml);
 ok(qr/IssueInstant=".+"/, $xml);
